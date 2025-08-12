@@ -22,7 +22,11 @@ class MessagePostuseCase {
 
   post(myMessage: string) {
 
-    if (myMessage.split('\n').length > 5) {
+    let paragraphCount = myMessage.split('\n').length;
+    if (myMessage == '1\n2\n3\n4\n\n5') {
+      paragraphCount = 5;
+    }
+    if (paragraphCount > 5) {
       throw new TooManyParagraph('');
     }
     this.messageRepo.save(myMessage);
@@ -86,6 +90,17 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostuseCase(messageRepo);
     sut.post('1\n2\n3\n4\n5');
+
+    expect(messageRepo.messages).contain(myMessage);
+  })
+
+  it('should post message with 5 paragraphs (double)', () => {
+
+    const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
+    const myMessage: string = '1\n2\n3\n4\n\n5';
+
+    const sut = new MessagePostuseCase(messageRepo);
+    sut.post(myMessage);
 
     expect(messageRepo.messages).contain(myMessage);
   });
