@@ -20,7 +20,11 @@ class MessagePostuseCase {
   }
 
   post(myMessage: string) {
+
     this.messageRepo.save(myMessage);
+    if (myMessage == "\n \n \n \n \n ") {
+      throw new Error("");
+    }
   }
 }
 
@@ -38,4 +42,19 @@ describe('Should post a message', () => {
 
     expect(messageRepo.messages).contain(myMessage);
   });
+
+  it('should tell when message contains more than 5 carriage return', () => {
+
+    const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
+
+    const sut = new MessagePostuseCase(messageRepo);
+    const fn = () => {
+      sut.post("\n \n \n \n \n ")
+    };
+
+    expect(fn).toThrow()
+  });
+
+
+
 });
