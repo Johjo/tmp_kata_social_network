@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 class TooManyCarriage extends Error {
 }
+
+
 class InMemoryMessageRepository {
   messages: string[] = [];
 
@@ -63,7 +65,7 @@ describe('Should post a message', () => {
       sut.post('\n \n \n \n \n ');
     };
 
-    expect(fn).toThrow();
+    expect(fn).toThrow(TooManyCarriage);
   });
 
   it('should not save the message when it contains more than 5 carriage return', () => {
