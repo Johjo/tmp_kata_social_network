@@ -21,9 +21,10 @@ class MessagePostuseCase {
 
   post(myMessage: string) {
 
+    if (myMessage.split('\n').length > 4) {
+      throw new Error('');
+    }
     this.messageRepo.save(myMessage);
-    if (myMessage.split("\n").length > 4)
-      throw new Error("");
   }
 }
 
@@ -32,10 +33,10 @@ describe('Should post a message', () => {
   it('should post a one line message', () => {
 
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
-    const myMessage: string = "je suis le premier message";
+    const myMessage: string = 'je suis le premier message';
 
     const sut = new MessagePostuseCase(messageRepo);
-    sut.post(myMessage)
+    sut.post(myMessage);
 
     //
 
@@ -48,10 +49,10 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostuseCase(messageRepo);
     const fn = () => {
-      sut.post("\n".repeat(4))
+      sut.post('\n'.repeat(4));
     };
 
-    expect(fn).toThrow()
+    expect(fn).toThrow();
   });
 
   it('should tell when message contains more than 5 carriage return', () => {
@@ -60,10 +61,10 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostuseCase(messageRepo);
     const fn = () => {
-      sut.post("\n \n \n \n \n ")
+      sut.post('\n \n \n \n \n ');
     };
 
-    expect(fn).toThrow()
+    expect(fn).toThrow();
   });
 
   it('should not save the message when it contains more than 5 carriage return', () => {
@@ -72,9 +73,17 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostuseCase(messageRepo);
 
+    try {
+      sut.post('\n \n \n \n \n ');
+
+    } catch {
+      expect(messageRepo.messages).toStrictEqual([])
+    }
 
 
-    expect(messageRepo.messages[0]).toBe(undefined)
+
+
+    // expect(messageRepo.messages[0]).toBe(undefined)
   });
 
 });
