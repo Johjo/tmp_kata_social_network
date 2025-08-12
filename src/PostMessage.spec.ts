@@ -13,8 +13,14 @@ class InMemoryMessageRepository {
 }
 
 class MessagePostuseCase {
-  post(myMessage: string) {
 
+  private messageRepo: InMemoryMessageRepository;
+  constructor(messageRepo: InMemoryMessageRepository) {
+    this.messageRepo = messageRepo;
+  }
+
+  post(myMessage: string) {
+    this.messageRepo.save(myMessage);
   }
 }
 
@@ -25,10 +31,10 @@ describe('Should post a message', () => {
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
     const myMessage: string = "je suis le premier message";
 
-    const sut = new MessagePostuseCase();
+    const sut = new MessagePostuseCase(messageRepo);
     sut.post(myMessage)
 
-    messageRepo.save(myMessage);
+    //
 
     expect(messageRepo.messages).contain(myMessage);
   });
