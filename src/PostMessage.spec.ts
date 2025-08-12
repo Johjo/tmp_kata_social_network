@@ -66,6 +66,15 @@ describe('Should post a message', () => {
     expect(fn).toThrow()
   });
 
+  it('should not save the message when it contains more than 5 carriage return', () => {
 
+    const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
+
+    const sut = new MessagePostuseCase(messageRepo);
+
+
+
+    expect(messageRepo.messages[0]).toBe(undefined)
+  });
 
 });
