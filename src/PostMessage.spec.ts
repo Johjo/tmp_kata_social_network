@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+class TooManyCarriage extends Error {
+}
 class InMemoryMessageRepository {
   messages: string[] = [];
 
-  constructor() {
-    // Nothing yet
-  }
 
   save(message: string): void {
     this.messages.push(message);
@@ -22,7 +21,7 @@ class MessagePostuseCase {
   post(myMessage: string) {
 
     if (myMessage.split('\n').length > 4) {
-      throw new Error('');
+      throw new TooManyCarriage('');
     }
     this.messageRepo.save(myMessage);
   }
@@ -73,12 +72,16 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostuseCase(messageRepo);
 
+
+    let error: unknown = undefined;
     try {
       sut.post('\n \n \n \n \n ');
 
-    } catch {
-      expect(messageRepo.messages).toStrictEqual([])
+    } catch (e: unknown) {
+      error = e;
     }
+
+      expect(error instanceof TooManyCarriage).toBeTruthy();
 
 
 
