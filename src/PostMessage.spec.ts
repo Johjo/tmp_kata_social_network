@@ -22,9 +22,8 @@ class MessagePostuseCase {
   post(myMessage: string) {
 
     this.messageRepo.save(myMessage);
-    if (myMessage == "\n \n \n \n \n ") {
+    if (myMessage.split("\n").length > 4)
       throw new Error("");
-    }
   }
 }
 
@@ -41,6 +40,18 @@ describe('Should post a message', () => {
     //
 
     expect(messageRepo.messages).contain(myMessage);
+  });
+
+  it('No error with cariage return', () => {
+
+    const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
+
+    const sut = new MessagePostuseCase(messageRepo);
+    const fn = () => {
+      sut.post("\n".repeat(4))
+    };
+
+    expect(fn).toThrow()
   });
 
   it('should tell when message contains more than 5 carriage return', () => {
