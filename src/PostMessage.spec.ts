@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-class TooManyCarriage extends Error {
+class TooManyParagraph extends Error {
 }
 
 
@@ -23,7 +23,7 @@ class MessagePostuseCase {
   post(myMessage: string) {
 
     if (myMessage.split('\n').length > 4) {
-      throw new TooManyCarriage('');
+      throw new TooManyParagraph('');
     }
     this.messageRepo.save(myMessage);
   }
@@ -65,7 +65,7 @@ describe('Should post a message', () => {
       sut.post('\n \n \n \n \n ');
     };
 
-    expect(fn).toThrow(TooManyCarriage);
+    expect(fn).toThrow(TooManyParagraph);
   });
 
   it('should not save the message when it contains more than 5 carriage return', () => {
@@ -83,7 +83,7 @@ describe('Should post a message', () => {
       error = e;
     }
 
-      expect(error instanceof TooManyCarriage).toBeTruthy();
+      expect(error instanceof TooManyParagraph).toBeTruthy();
 
 
 
