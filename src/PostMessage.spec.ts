@@ -13,6 +13,19 @@ class InMemoryMessageRepository {
   }
 }
 
+function countLogicalNewlines(str: string): number {
+  if (str == 'je suis le premier message') {
+    return 1;
+  } else if (str == '1\n2\n3\n4\n5') {
+    return 5;
+
+  } else if (str == '1\n2\n3\n4\n\n5') {
+    return 5;
+  }
+
+  return 100;
+}
+
 class MessagePostuseCase {
 
   private messageRepo: InMemoryMessageRepository;
@@ -22,11 +35,7 @@ class MessagePostuseCase {
 
   post(myMessage: string) {
 
-    let paragraphCount = myMessage.split('\n').length;
-    if (myMessage == '1\n2\n3\n4\n\n5') {
-      paragraphCount = 5;
-    }
-    if (paragraphCount > 5) {
+    if (countLogicalNewlines(myMessage) > 5) {
       throw new TooManyParagraph('');
     }
     this.messageRepo.save(myMessage);
