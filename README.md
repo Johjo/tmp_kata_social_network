@@ -6,3 +6,28 @@ Vu par Jonathan
 Vu par Romain
 Vu par Johann
 
+# User story: 
+
+Je veux poster sur le réseau social
+
+Qu'est-ce que je veux poster ?
+On peut poster du markdown
+On peut rester en texte
+
+Limite de caractère ? 
+Possibilité : 
+- On ne peut pas utiliser plus de 4 retours chariot
+
+Exemple : 
+
+```
+Bonjour\n\nJe suis sur la nouvelle plateforme 5 paragraphes\nJe n'ai pas le droit d'avoir plus de 5 paragraphes
+```
+
+Ici, on a 3 paragraphes et donc 2 retours chariots (un double retour chariot ne compte que comme un seul)
+
+
+
+
+
+
