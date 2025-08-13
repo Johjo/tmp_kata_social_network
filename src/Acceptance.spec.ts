@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { MessagePostUseCase } from './PostMessage.spec';
+import { MessagePostUseCase, MessageRepositoryPort } from './PostMessage.spec';
 
+export class InMemoryMessageRepositoryForDemo implements MessageRepositoryPort {
+  messages: string[] = [];
+
+
+  save(message: string): void {
+    this.messages.push(message);
+  }
+}
 
 class FollowUseCase {
   execute() {
@@ -26,7 +34,8 @@ class SocialNetwork {
   }
 
   post(bob: string, message: string) {
-    const postMessage = new MessagePostUseCase()
+    const messageRepo: MessageRepositoryPort = new InMemoryMessageRepositoryForDemo();
+    const postMessage = new MessagePostUseCase(messageRepo)
     postMessage.post(message);
   }
 }

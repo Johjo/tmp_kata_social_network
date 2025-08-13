@@ -4,7 +4,11 @@ class TooManyParagraph extends Error {
 }
 
 
-class InMemoryMessageRepository {
+export interface MessageRepositoryPort {
+  save(message: string): void;
+}
+
+class InMemoryMessageRepository implements MessageRepositoryPort {
   messages: string[] = [];
 
 
@@ -32,8 +36,8 @@ function countParagraph(str: string): number {
 }
 export class MessagePostUseCase {
 
-  private messageRepo: InMemoryMessageRepository;
-  constructor(messageRepo: InMemoryMessageRepository) {
+  private messageRepo: MessageRepositoryPort;
+  constructor(messageRepo: MessageRepositoryPort) {
     this.messageRepo = messageRepo;
   }
 
