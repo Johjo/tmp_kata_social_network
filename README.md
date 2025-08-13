@@ -16,7 +16,7 @@ On peut rester en texte
 
 Limite de caractère ? 
 Possibilité : 
-- On ne peut pas utiliser plus de 4 retours chariot
+- On ne peut pas avoir plus de 5 paragraphes
 
 Exemple : 
 
