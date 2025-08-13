@@ -7,7 +7,7 @@ Vu par Romain
 Vu par Johann
 Vu par Fred
 
-# User story: 
+# User story 1: 
 
 Je veux poster sur le réseau social
 
@@ -26,6 +26,14 @@ Bonjour\n\nJe suis sur la nouvelle plateforme 5 paragraphes\nJe n'ai pas le droi
 ```
 
 Ici, on a 3 paragraphes et donc 2 retours chariots (un double retour chariot ne compte que comme un seul)
+
+# User story 2:
+Je veux pouvoir voir les posts rédigés par une personne que je suis (follow)
+
+Fonctionnalité : 
+- follow une personne
+- la personne qui follow doit voir le post
+
 
 
 
