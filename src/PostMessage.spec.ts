@@ -30,7 +30,7 @@ function countParagraph(str: string): number {
 
   return count + 1;
 }
-export class MessagePostuseCase {
+export class MessagePostUseCase {
 
   private messageRepo: InMemoryMessageRepository;
   constructor(messageRepo: InMemoryMessageRepository) {
@@ -53,7 +53,7 @@ describe('Should post a message', () => {
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
     const myMessage: string = 'je suis le premier message';
 
-    const sut = new MessagePostuseCase(messageRepo);
+    const sut = new MessagePostUseCase(messageRepo);
     sut.post(myMessage);
 
     //
@@ -65,7 +65,7 @@ describe('Should post a message', () => {
 
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
 
-    const sut = new MessagePostuseCase(messageRepo);
+    const sut = new MessagePostUseCase(messageRepo);
     const fn = () => {
       sut.post('\n \n \n \n \n ');
     };
@@ -77,7 +77,7 @@ describe('Should post a message', () => {
 
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
 
-    const sut = new MessagePostuseCase(messageRepo);
+    const sut = new MessagePostUseCase(messageRepo);
 
 
     let error: unknown = undefined;
@@ -101,7 +101,7 @@ describe('Should post a message', () => {
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
     const myMessage: string = '1\n2\n3\n4\n5';
 
-    const sut = new MessagePostuseCase(messageRepo);
+    const sut = new MessagePostUseCase(messageRepo);
     sut.post('1\n2\n3\n4\n5');
 
     expect(messageRepo.messages).contain(myMessage);
@@ -112,7 +112,7 @@ describe('Should post a message', () => {
     const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
     const myMessage: string = '1\n2\n3\n4\n\n5';
 
-    const sut = new MessagePostuseCase(messageRepo);
+    const sut = new MessagePostUseCase(messageRepo);
     sut.post(myMessage);
 
     expect(messageRepo.messages).contain(myMessage);

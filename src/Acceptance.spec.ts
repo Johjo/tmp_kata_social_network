@@ -1,28 +1,45 @@
 import { describe, expect, it } from 'vitest';
+import { MessagePostUseCase } from './PostMessage.spec';
 
 
-class Controller {
+class FollowUseCase {
+  execute() {
+
+  }
+}
+
+class SeePostQuery {
+  query() {
+    return []
+  }
+}
+
+class SocialNetwork {
   follow(follower: string, followed: string) {
-
+    const follow = new FollowUseCase()
+    follow.execute()
   }
 
   seePost(asUser: string) {
+    const seePost = new SeePostQuery();
+    return seePost.query()
   }
 
   post(bob: string, message: string) {
-    return
+    const postMessage = new MessagePostUseCase()
+    postMessage.post(message);
   }
 }
 
 describe('Acceptance', () => {
 
   it('Alice should see a post from Bob', () => {
-    const controller = new Controller()
+    const socialNetwork = new SocialNetwork()
 
-    controller.follow("Alice", "Bob")
-    controller.post("Bob", "message");
+    socialNetwork.follow("Alice", "Bob")
+    socialNetwork.post("Bob", "message");
 
-    const posts = controller.seePost("Alice")
+    const posts = socialNetwork.seePost("Alice")
 
     expect(posts).toStrictEqual(["message"]);
   });
