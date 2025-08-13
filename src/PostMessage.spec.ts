@@ -30,7 +30,7 @@ function countParagraph(str: string): number {
 
   return count + 1;
 }
-class MessagePostuseCase {
+export class MessagePostuseCase {
 
   private messageRepo: InMemoryMessageRepository;
   constructor(messageRepo: InMemoryMessageRepository) {

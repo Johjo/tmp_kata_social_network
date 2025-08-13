@@ -6,25 +6,25 @@ class Controller {
 
   }
 
-  seePost(user: string) {
-    return []
+  seePost(asUser: string) {
+  }
+
+  post(bob: string, message: string) {
+    return
   }
 }
 
-describe('Should handle use cases', () => {
+describe('Acceptance', () => {
 
-  it('should post a one line message', () => {
+  it('Alice should see a post from Bob', () => {
     const controller = new Controller()
 
     controller.follow("Alice", "Bob")
+    controller.post("Bob", "message");
 
     const posts = controller.seePost("Alice")
 
-    expect(posts).toStrictEqual([]);
-
-
-
-
+    expect(posts).toStrictEqual(["message"]);
   });
 
 });
