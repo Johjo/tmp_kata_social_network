@@ -4,6 +4,10 @@ import { MessagePostUseCase, MessageRepositoryPort } from './PostMessage.spec';
 import { SeePostUseCase } from './SeePostQuery.spec';
 
 export class InMemoryMessageRepositoryForDemo implements MessageRepositoryPort {
+  all(): string[] {
+    return this.messages;
+  }
+
   messages: string[] = [];
 
   save(message: string): void {
@@ -16,19 +20,24 @@ class FollowUseCase {
 }
 
 class SocialNetwork {
+  messageRepo: MessageRepositoryPort;
+
+  constructor() {
+    this.messageRepo = new InMemoryMessageRepositoryForDemo();
+  }
+
   follow(follower: string, followed: string) {
     const follow = new FollowUseCase();
     follow.execute();
   }
 
   seePost(asUser: string) {
-    const seePost = new SeePostUseCase();
+    const seePost = new SeePostUseCase(this.messageRepo);
     return seePost.query();
   }
 
   post(bob: string, message: string) {
-    const messageRepo: MessageRepositoryPort = new InMemoryMessageRepositoryForDemo();
-    const postMessage = new MessagePostUseCase(messageRepo);
+    const postMessage = new MessagePostUseCase(this.messageRepo);
     postMessage.post(message);
   }
 }
