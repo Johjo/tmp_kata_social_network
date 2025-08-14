@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 class TooManyParagraph extends Error {
 }
 
-
 export interface MessageRepositoryPort {
 
   all(): string[];
@@ -48,12 +47,12 @@ export class MessagePostUseCase {
     this.messageRepo = messageRepo;
   }
 
-  post(myMessage: string) {
+  post(userName: string, myMessage: string) {
 
     if (countParagraph(myMessage) > 5) {
       throw new TooManyParagraph('');
     }
-    this.messageRepo.save(myMessage);
+    this.messageRepo.save({ userName, message: myMessage });
   }
 }
 
@@ -65,11 +64,11 @@ describe('Should post a message', () => {
     const myMessage: string = 'je suis le premier message';
 
     const sut = new MessagePostUseCase(messageRepo);
-    sut.post(myMessage);
+    sut.post("A", myMessage);
 
     //
 
-    expect(messageRepo.messages).contain(myMessage);
+    expect(messageRepo.messages).toStrictEqual([{ userName: "A", message: myMessage }]);
   });
 
   it('should tell when message contains more than 5 carriage return', () => {
@@ -78,7 +77,7 @@ describe('Should post a message', () => {
 
     const sut = new MessagePostUseCase(messageRepo);
     const fn = () => {
-      sut.post('\n \n \n \n \n ');
+      sut.post("B", '\n \n \n \n \n ');
     };
 
     expect(fn).toThrow(TooManyParagraph);
@@ -93,18 +92,13 @@ describe('Should post a message', () => {
 
     let error: unknown = undefined;
     try {
-      sut.post('\n \n \n \n \n ');
+      sut.post("C", '\n \n \n \n \n ');
 
     } catch (e: unknown) {
       error = e;
     }
 
       expect(error instanceof TooManyParagraph).toBeTruthy();
-
-
-
-
-    // expect(messageRepo.messages[0]).toBe(undefined)
   });
 
   it('should post message with 5 paragraphs', () => {
@@ -113,9 +107,9 @@ describe('Should post a message', () => {
     const myMessage: string = '1\n2\n3\n4\n5';
 
     const sut = new MessagePostUseCase(messageRepo);
-    sut.post('1\n2\n3\n4\n5');
+    sut.post("D", '1\n2\n3\n4\n5');
 
-    expect(messageRepo.messages).contain(myMessage);
+    expect(messageRepo.messages).toStrictEqual([{ userName: "D", message: myMessage }]);
   })
 
   it('should post message with 5 paragraphs (double)', () => {
@@ -124,9 +118,23 @@ describe('Should post a message', () => {
     const myMessage: string = '1\n2\n3\n4\n\n5';
 
     const sut = new MessagePostUseCase(messageRepo);
-    sut.post(myMessage);
+    sut.post("E", myMessage);
 
-    expect(messageRepo.messages).contain(myMessage);
+    expect(messageRepo.messages).toStrictEqual([{ userName: "E", message: myMessage }]);
+  });
+
+  it('should save the username', () => {
+
+    const messageRepo: InMemoryMessageRepository = new InMemoryMessageRepository();
+    const myMessage: string = 'bonjour';
+
+    const sut = new MessagePostUseCase(messageRepo);
+    sut.post("Damien", myMessage);
+
+    expect(messageRepo.messages).toStrictEqual([{
+      userName: "Damien",
+      message: myMessage
+    }]);
   });
 
 

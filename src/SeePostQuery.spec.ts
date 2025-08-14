@@ -17,7 +17,7 @@ class InMemoryMessageRepository implements MessageRepositoryPort {
   messages: string[] = [];
 
 
-  save(message: string): void {
+  save(userName: string, message: string): void {
     this.messages.push(message);
   }
 
@@ -29,16 +29,18 @@ class InMemoryMessageRepository implements MessageRepositoryPort {
 describe('SeePostQuery', () => {
   it.each([
     [
+      "Charlie",
       "coucou",
       [`[Charlie] coucou`]
     ],
-    // [
-    //   "salut",
-    //   ["[Bob] salut"]
-    // ]
-  ]) ('Should return a list of posts', (message, expected) => {
+    [
+      "Bob",
+      "salut",
+      ["[Bob] salut"]
+    ]
+  ]) ('Should return a list of posts', (userName, message, expected) => {
     const messageRepository = new InMemoryMessageRepository();
-    messageRepository.save(message);
+    messageRepository.save(userName, message);
     const seePostUseCase = new SeePostUseCase(messageRepository);
 
     expect(seePostUseCase.query()).toStrictEqual(expected);

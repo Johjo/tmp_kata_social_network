@@ -36,9 +36,9 @@ class SocialNetwork {
     return seePost.query();
   }
 
-  post(bob: string, message: string) {
+  post(userName: string, message: string) {
     const postMessage = new MessagePostUseCase(this.messageRepo);
-    postMessage.post(message);
+    postMessage.post(userName, message);
   }
 }
 
