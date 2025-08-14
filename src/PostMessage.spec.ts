@@ -5,6 +5,9 @@ class TooManyParagraph extends Error {
 
 
 export interface MessageRepositoryPort {
+
+  all(): string[];
+
   save(message: string): void;
 }
 
@@ -14,6 +17,10 @@ class InMemoryMessageRepository implements MessageRepositoryPort {
 
   save(message: string): void {
     this.messages.push(message);
+  }
+
+  all(): string[] {
+    throw new Error("Not implemented");
   }
 }
 

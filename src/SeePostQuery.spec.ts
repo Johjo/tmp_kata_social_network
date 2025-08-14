@@ -2,8 +2,14 @@ import { describe, it, expect } from 'vitest';
 import { MessageRepositoryPort } from './PostMessage.spec';
 
 export class SeePostUseCase {
+  repository: MessageRepositoryPort;
+
+  constructor(messageRepo: MessageRepositoryPort) {
+    this.repository = messageRepo;
+  }
+
   query() {
-    return ["[Charlie] coucou"];
+    return [`[Charlie] ${this.repository.all()[0]}`]
   }
 }
 
@@ -21,12 +27,21 @@ class InMemoryMessageRepository implements MessageRepositoryPort {
 }
 
 describe('SeePostQuery', () => {
-  it('Should return a list of posts', () => {
+  it.each([
+    [
+      "coucou",
+      [`[Charlie] coucou`]
+    ],
+    // [
+    //   "salut",
+    //   ["[Bob] salut"]
+    // ]
+  ]) ('Should return a list of posts', (message, expected) => {
     const messageRepository = new InMemoryMessageRepository();
-    messageRepository.save("coucou");
-    const seePostUseCase = new SeePostUseCase();
+    messageRepository.save(message);
+    const seePostUseCase = new SeePostUseCase(messageRepository);
 
-    expect(seePostUseCase.query()).toStrictEqual([`[Charlie] coucou`]);
+    expect(seePostUseCase.query()).toStrictEqual(expected);
   });
 });
 
