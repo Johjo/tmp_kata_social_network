@@ -5,17 +5,17 @@ class TooManyParagraph extends Error {
 
 export interface MessageRepositoryPort {
 
-  all(): string[];
+  all(): { userName: string; message: string }[];
 
-  save(message: string): void;
+  save(data: { userName: string; message: string }): void;
 }
 
 class InMemoryMessageRepository implements MessageRepositoryPort {
-  messages: string[] = [];
+  messages: { userName: string; message: string }[] = [];
 
 
-  save(message: string): void {
-    this.messages.push(message);
+  save(data: { userName: string; message: string }): void {
+    this.messages.push(data);
   }
 
   all(): string[] {

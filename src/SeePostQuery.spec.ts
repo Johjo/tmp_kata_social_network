@@ -9,16 +9,19 @@ export class SeePostUseCase {
   }
 
   query() {
-    return [`[Charlie] ${this.repository.all()[0]}`]
+    return [`[${this.repository.all()[0].userName}] ${this.repository.all()[0].message}`]
   }
 }
 
 class InMemoryMessageRepository implements MessageRepositoryPort {
-  messages: string[] = [];
+  feed(userName: string, message: string) {
+    this.save({ userName, message })
+  }
 
+  messages: { userName: string; message: string }[] = [];
 
-  save(userName: string, message: string): void {
-    this.messages.push(message);
+  save(data: { userName: string; message: string }): void {
+    this.messages.push(data);
   }
 
   all() {
@@ -40,7 +43,7 @@ describe('SeePostQuery', () => {
     ]
   ]) ('Should return a list of posts', (userName, message, expected) => {
     const messageRepository = new InMemoryMessageRepository();
-    messageRepository.save(userName, message);
+    messageRepository.feed(userName, message);
     const seePostUseCase = new SeePostUseCase(messageRepository);
 
     expect(seePostUseCase.query()).toStrictEqual(expected);
