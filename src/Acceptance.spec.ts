@@ -42,6 +42,6 @@ describe('Acceptance', () => {
 
     const posts = socialNetwork.seePost('Alice');
 
-    expect(posts).toStrictEqual(['message']);
+    expect(posts).toStrictEqual(['[Bob] message']);
   });
 });
