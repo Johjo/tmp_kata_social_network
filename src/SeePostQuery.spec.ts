@@ -3,7 +3,7 @@ import { MessageRepositoryPort } from './PostMessage.spec';
 
 export class SeePostUseCase {
   query() {
-    return [];
+    return ["[Charlie] coucou"];
   }
 }
 
@@ -26,7 +26,7 @@ describe('SeePostQuery', () => {
     messageRepository.save("coucou");
     const seePostUseCase = new SeePostUseCase();
 
-    expect(seePostUseCase.query()).toStrictEqual(messageRepository.all());
+    expect(seePostUseCase.query()).toStrictEqual([`[Charlie] coucou`]);
   });
 });
 
